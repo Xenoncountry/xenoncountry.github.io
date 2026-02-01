@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yatırım Sihirbazı - "Keşke Alsaydım"</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💸</text></svg>">
+    
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; color: #1f2937; margin: 0; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; }
+        
+        .container {
+            background: white; width: 100%; max-width: 800px; border-radius: 24px; box-shadow: 0 20px 60px -10px rgba(0,0,0,0.1); overflow: hidden; margin-top: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center; color: white;
+        }
+        .header h1 { margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -1px; }
+        .header p { margin: 10px 0 0; opacity: 0.9; font-size: 16px; }
+
+        .content { padding: 30px; }
+
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        @media (max-width: 600px) { .input-grid { grid-template-columns: 1fr; } }
+
+        .form-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #4b5563; }
+        
+        .input-box {
+            width: 100%; padding: 14px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 16px; font-family: inherit; font-weight: 500;
+            transition: 0.2s; box-sizing: border-box; outline: none; background: #f9fafb;
+        }
+        .input-box:focus { border-color: #10b981; background: white; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
+
+        select.input-box { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234b5563' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
+
+        .calculate-btn {
+            width: 100%; background: #111827; color: white; border: none; padding: 18px; border-radius: 12px; font-size: 18px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .calculate-btn:hover { background: #000; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        .result-area { display: none; margin-top: 40px; border-top: 2px dashed #e5e7eb; padding-top: 30px; }
+        
+        .result-card {
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 20px; margin-bottom: 15px;
+            display: flex; align-items: center; justify-content: space-between; transition: 0.3s;
+        }
+        .result-card:hover { transform: translateX(5px); border-color: #10b981; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.1); }
+
+        .asset-icon {
+            width: 50px; height: 50px; border-radius: 12px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-right: 15px; flex-shrink: 0;
+        }
+        
+        .asset-info h3 { margin: 0; font-size: 16px; color: #111827; }
+        .asset-info p { margin: 4px 0 0; font-size: 13px; color: #6b7280; }
+
+        .asset-value { text-align: right; }
+        .current-val { display: block; font-size: 18px; font-weight: 800; color: #111827; }
+        .profit-val { font-size: 13px; font-weight: 600; padding: 4px 8px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+        
+        .profit-plus { background: #dcfce7; color: #166534; }
+        .profit-minus { background: #fee2e2; color: #991b1b; }
+
+        .badge-winner {
+            background: linear-gradient(135deg, #fbbf24, #d97706); color: white; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-bottom: 5px; display: inline-block;
+        }
+
+        .disclaimer { font-size: 12px; color: #9ca3af; text-align: center; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <i class="fa-solid fa-chart-line fa-3x" style="margin-bottom:15px; opacity:0.9;"></i>
+            <h1>Zaman Makinesi 💸</h1>
+            <p>Geçmişte o parayla ne alsaydın, şimdi ne kadarın olurdu?</p>
+        </div>
+
+        <div class="content">
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label>Geçmişteki Yatırım Tutarı (TL)</label>
+                <input type="number" id="amount" class="input-box" placeholder="Örn: 1000" value="1000">
+            </div>
+
+            <div class="input-grid">
+                <div class="form-group">
+                    <label>Hangi Yıl?</label>
+                    <select id="year" class="input-box" onchange="updateMonths()">
+                        <!-- JS ile doldurulacak -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Hangi Ay?</label>
+                    <select id="month" class="input-box">
+                        <!-- JS ile doldurulacak -->
+                    </select>
+                </div>
+            </div>
+
+            <button class="calculate-btn" onclick="hesapla()">
+                HESAPLA <i class="fa-solid fa-calculator"></i>
+            </button>
+
+            <div id="results" class="result-area">
+                <!-- Sonuçlar Buraya Gelecek -->
+            </div>
+
+            <div class="disclaimer">
+                * Veriler yaklaşık aylık ortalamalardır. Yatırım tavsiyesi değildir. 
+                <br>Geçmiş veriler 2020 - 2025 arasını kapsamaktadır.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- BASİTLEŞTİRİLMİŞ TARİHSEL VERİ SETİ (AYLIK ORTALAMALAR) ---
+        // Veri Formatı: YIL-AY: { usd, eur, gold, btc, eth, silver }
+        // Gerçek verilere yakın yaklaşık değerlerdir.
+        
+        const historicalData = {
+            // 2020
+            "2020-1": { usd: 5.92, eur: 6.58, gold: 298, btc: 47000, eth: 950, silver: 3.5 },
+            "2020-6": { usd: 6.82, eur: 7.68, gold: 380, btc: 64000, eth: 1600, silver: 4.1 },
+            // 2021
+            "2021-1": { usd: 7.35, eur: 8.95, gold: 440, btc: 230000, eth: 9000, silver: 6.2 },
+            "2021-6": { usd: 8.60, eur: 10.35, gold: 510, btc: 310000, eth: 21000, silver: 7.5 },
+            "2021-12":{ usd: 13.50, eur: 15.20, gold: 780, btc: 650000, eth: 55000, silver: 10.2 },
+            // 2022
+            "2022-1": { usd: 13.40, eur: 15.10, gold: 790, btc: 550000, eth: 42000, silver: 10.5 },
+            "2022-6": { usd: 16.80, eur: 17.80, gold: 980, btc: 480000, eth: 31000, silver: 11.8 },
+            "2022-12":{ usd: 18.60, eur: 19.80, gold: 1080, btc: 315000, eth: 22500, silver: 14.1 },
+            // 2023
+            "2023-1": { usd: 18.75, eur: 20.35, gold: 1150, btc: 410000, eth: 29000, silver: 14.8 },
+            "2023-3": { usd: 18.95, eur: 20.15, gold: 1190, btc: 520000, eth: 33000, silver: 15.2 },
+            "2023-6": { usd: 23.50, eur: 25.40, gold: 1480, btc: 690000, eth: 45000, silver: 18.5 },
+            "2023-9": { usd: 26.90, eur: 28.70, gold: 1650, btc: 720000, eth: 44000, silver: 20.1 },
+            "2023-12":{ usd: 29.10, eur: 31.80, gold: 1900, btc: 1250000, eth: 65000, silver: 22.5 },
+            // 2024
+            "2024-1": { usd: 30.20, eur: 32.90, gold: 2000, btc: 1350000, eth: 72000, silver: 23.1 },
+            "2024-3": { usd: 32.10, eur: 34.80, gold: 2300, btc: 2100000, eth: 115000, silver: 26.5 },
+            "2024-6": { usd: 32.50, eur: 35.10, gold: 2450, btc: 2200000, eth: 120000, silver: 30.5 },
+            "2024-9": { usd: 34.10, eur: 37.90, gold: 2850, btc: 2150000, eth: 95000, silver: 33.0 },
+            "2024-12":{ usd: 34.80, eur: 36.50, gold: 3050, btc: 3300000, eth: 130000, silver: 36.5 },
+            // 2025 (Güncel Tahmini)
+            "2025-1": { usd: 35.50, eur: 37.20, gold: 3150, btc: 3500000, eth: 135000, silver: 38.0 }
+        };
+
+        // GÜNCEL KURLAR (Canlı olmadığı için manuel güncellenmeli veya API bağlanmalı)
+        // Burayı demo olduğu için son veri ile eşliyorum
+        const currentRates = {
+            usd: 36.20,
+            eur: 38.50,
+            gold: 3250,
+            btc: 3650000,
+            eth: 140000,
+            silver: 41.50
+        };
+
+        // --- UYGULAMA MANTIĞI ---
+
+        // Yılları Doldur
+        const yearSelect = document.getElementById('year');
+        const currentYear = 2025;
+        for (let i = currentYear; i >= 2020; i--) {
+            let option = document.createElement('option');
+            option.value = i;
+            option.text = i;
+            yearSelect.appendChild(option);
+        }
+
+        // Ayları Doldur
+        const monthSelect = document.getElementById('month');
+        const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+        
+        function updateMonths() {
+            monthSelect.innerHTML = "";
+            monthNames.forEach((m, index) => {
+                let option = document.createElement('option');
+                option.value = index + 1;
+                option.text = m;
+                monthSelect.appendChild(option);
+            });
+        }
+        updateMonths();
+
+        // En yakın veriyi bulma fonksiyonu (Tam o ay yoksa en yakınını getirir)
+        function getClosestData(year, month) {
+            let key = `${year}-${month}`;
+            if (historicalData[key]) return historicalData[key];
+
+            // Eğer tam o ay yoksa, o yılın en yakın verisini ara
+            // Basitlik için bir önceki veya sonraki aylara bakılabilir
+            // Bu demo için veri setinde olan en yakın ayı döndüreceğiz
+            // (Gerçek projede her ayın verisi olmalı)
+            const keys = Object.keys(historicalData).sort();
+            // Basit fallback: Eğer seçilen tarih listede yoksa, listedeki bir önceki tarihi al
+            return historicalData["2024-12"]; // Default fallback (hata önleyici)
+        }
+
+        function hesapla() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            
+            // Veri setinden o tarihe en yakın veriyi bulalım
+            // Not: Bu demo kodda ara aylar için veri eksikse en yakınını uydurmak yerine
+            // veri setini genişletmek gerekir. Burada basit bir "key" kontrolü yapıyorum.
+            
+            // Akıllı eşleştirme: Seçilen ay listede yoksa, listedeki en yakın ayı bul.
+            let foundData = null;
+            let searchKey = `${year}-${month}`;
+            
+            if (historicalData[searchKey]) {
+                foundData = historicalData[searchKey];
+            } else {
+                // Veri setinde bu ay yoksa, o yılın ilk verisini al (Basitleştirme)
+                // Gerçek kullanımda tüm aylar json'da olmalı.
+                // Kullanıcı deneyimi için: "2023-2" seçildiyse "2023-1" verisini kullanabiliriz.
+                foundData = historicalData[`${year}-1`] || historicalData[`${year}-6`] || historicalData[`${year}-12`];
+            }
+
+            if (!foundData) {
+                alert("Bu tarih için veri bulunamadı. Lütfen daha güncel veya eski bir tarih seçin.");
+                return;
+            }
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = "";
+
+            const assets = [
+                { id: 'gold', name: 'Gram Altın', icon: 'fa-coins', color: '#fbbf24' },
+                { id: 'usd', name: 'Dolar ($)', icon: 'fa-dollar-sign', color: '#10b981' },
+                { id: 'eur', name: 'Euro (€)', icon: 'fa-euro-sign', color: '#3b82f6' },
+                { id: 'btc', name: 'Bitcoin', icon: 'fa-bitcoin', color: '#f59e0b' },
+                { id: 'eth', name: 'Ethereum', icon: 'fa-brands fa-ethereum', color: '#6366f1' },
+                { id: 'silver', name: 'Gümüş', icon: 'fa-ring', color: '#9ca3af' }
+            ];
+
+            // Hesaplamalar
+            let calculations = assets.map(asset => {
+                let pastPrice = foundData[asset.id];
+                let currentPrice = currentRates[asset.id];
+                
+                // Kaç adet alınabilirdi?
+                let quantity = amount / pastPrice;
+                
+                // Bugünkü değeri
+                let currentValue = quantity * currentPrice;
+                
+                // Kar
+                let profit = currentValue - amount;
+                let profitRate = (profit / amount) * 100;
+                
+                return { ...asset, currentValue, profit, profitRate, quantity };
+            });
+
+            // En çok kazandıranı bul
+            calculations.sort((a, b) => b.currentValue - a.currentValue);
+            
+            calculations.forEach((item, index) => {
+                let isWinner = index === 0;
+                let profitClass = item.profit >= 0 ? 'profit-plus' : 'profit-minus';
+                let profitIcon = item.profit >= 0 ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
+                
+                let html = `
+                    <div class="result-card" style="${isWinner ? 'border: 2px solid #fbbf24; background:#fffbeb;' : ''}">
+                        <div style="display:flex; align-items:center;">
+                            <div class="asset-icon" style="color:${item.color}; background:${item.color}20;">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            <div class="asset-info">
+                                ${isWinner ? '<div class="badge-winner">🏆 ŞAMPİYON</div>' : ''}
+                                <h3>${item.name}</h3>
+                                <p>${item.quantity.toFixed(2)} adet alınabiliyordu</p>
+                            </div>
+                        </div>
+                        <div class="asset-value">
+                            <span class="current-val">${item.currentValue.toLocaleString('tr-TR', {maximumFractionDigits: 0})} TL</span>
+                            <div class="profit-val ${profitClass}">
+                                <i class="fa-solid ${profitIcon}"></i> %${item.profitRate.toFixed(0)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                resultsDiv.innerHTML += html;
+            });
+        }
+    </script>
+</body>
+</html>
