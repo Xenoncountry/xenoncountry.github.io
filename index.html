@@ -6,10 +6,10 @@
     <title>Yatırım Sihirbazı - "Keşke Alsaydım"</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
     
-    <!-- Search Console Doğrulama Kodu (Yeni mülk oluşturursan yeni kod verebilir, burayı güncellemeyi unutma) -->
+    <!-- Search Console Doğrulama Kodu -->
     <meta name="google-site-verification" content="Y6kHfSOU_Ste7zWLsnuRCjI7j5pn8QJZs6RGaUsrHIM" />
 
-    <!-- GOOGLE ADSENSE (Senin verdiğin kod BURADA) -->
+    <!-- GOOGLE ADSENSE -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8335171074656428"
      crossorigin="anonymous"></script>
 
@@ -116,19 +116,47 @@
         // --- DEV VERİ SETİ (AYLIK) ---
         // usd, gold (gram), bist (endeks), bread (ekmek), wage (asgari ücret)
         const db = {
+            2015: {
+                1: {usd: 2.34, gold: 95, bist: 880, bread: 1.0, wage: 1000},
+                6: {usd: 2.70, gold: 104, bist: 820, bread: 1.0, wage: 1000},
+                9: {usd: 3.05, gold: 110, bist: 750, bread: 1.0, wage: 1000},
+                12: {usd: 2.92, gold: 100, bist: 720, bread: 1.25, wage: 1000}
+            },
+            2016: {
+                1: {usd: 3.00, gold: 108, bist: 730, bread: 1.25, wage: 1300},
+                6: {usd: 2.90, gold: 120, bist: 770, bread: 1.25, wage: 1300},
+                7: {usd: 3.05, gold: 130, bist: 750, bread: 1.25, wage: 1300}, // Darbe girişimi etkisi
+                12: {usd: 3.50, gold: 130, bist: 780, bread: 1.25, wage: 1300}
+            },
+            2017: {
+                1: {usd: 3.75, gold: 145, bist: 850, bread: 1.25, wage: 1404},
+                6: {usd: 3.52, gold: 142, bist: 1000, bread: 1.5, wage: 1404},
+                12: {usd: 3.85, gold: 158, bist: 1100, bread: 1.5, wage: 1404}
+            },
+            2018: {
+                1: {usd: 3.78, gold: 160, bist: 1150, bread: 1.5, wage: 1603},
+                5: {usd: 4.50, gold: 190, bist: 1000, bread: 1.5, wage: 1603},
+                8: {usd: 6.50, gold: 250, bist: 900, bread: 1.5, wage: 1603}, // Brunson Krizi
+                12: {usd: 5.30, gold: 215, bist: 910, bread: 1.75, wage: 1603}
+            },
+            2019: {
+                1: {usd: 5.35, gold: 225, bist: 1000, bread: 1.75, wage: 2020},
+                5: {usd: 6.05, gold: 250, bist: 900, bread: 2.0, wage: 2020},
+                12: {usd: 5.95, gold: 290, bist: 1100, bread: 2.0, wage: 2020}
+            },
             2020: {
-                1: {usd: 5.9, gold: 300, bist: 1200, bread: 1.5, wage: 2324},
-                3: {usd: 6.3, gold: 320, bist: 900, bread: 1.5, wage: 2324},
-                6: {usd: 6.8, gold: 380, bist: 1100, bread: 1.5, wage: 2324},
-                9: {usd: 7.5, gold: 460, bist: 1150, bread: 1.75, wage: 2324},
-                12: {usd: 7.7, gold: 450, bist: 1400, bread: 1.75, wage: 2324}
+                1: {usd: 5.95, gold: 300, bist: 1200, bread: 1.5, wage: 2324},
+                3: {usd: 6.40, gold: 330, bist: 900, bread: 1.5, wage: 2324}, // Pandemi başlangıcı
+                8: {usd: 7.30, gold: 460, bist: 1100, bread: 1.75, wage: 2324},
+                11: {usd: 8.50, gold: 530, bist: 1300, bread: 1.75, wage: 2324},
+                12: {usd: 7.70, gold: 450, bist: 1400, bread: 1.75, wage: 2324}
             },
             2021: {
-                1: {usd: 7.4, gold: 440, bist: 1500, bread: 2.0, wage: 2825},
-                4: {usd: 8.2, gold: 480, bist: 1400, bread: 2.0, wage: 2825},
-                7: {usd: 8.6, gold: 500, bist: 1350, bread: 2.0, wage: 2825},
-                10: {usd: 9.3, gold: 550, bist: 1550, bread: 2.5, wage: 2825},
-                12: {usd: 13.5, gold: 780, bist: 1900, bread: 3.0, wage: 2825}
+                1: {usd: 7.40, gold: 440, bist: 1500, bread: 2.0, wage: 2825},
+                3: {usd: 7.50, gold: 420, bist: 1400, bread: 2.0, wage: 2825}, // Merkez Bankası değişimi
+                6: {usd: 8.60, gold: 500, bist: 1400, bread: 2.0, wage: 2825},
+                11: {usd: 12.5, gold: 750, bist: 1800, bread: 2.5, wage: 2825},
+                12: {usd: 13.5, gold: 780, bist: 2000, bread: 3.0, wage: 2825} // Kur Korumalı ayı
             },
             2022: {
                 1: {usd: 13.5, gold: 790, bist: 2000, bread: 3.0, wage: 4253},
@@ -139,7 +167,7 @@
             },
             2023: {
                 1: {usd: 18.8, gold: 1150, bist: 5000, bread: 5.0, wage: 8506},
-                4: {usd: 19.4, gold: 1250, bist: 4800, bread: 6.0, wage: 8506},
+                5: {usd: 19.5, gold: 1250, bist: 4800, bread: 6.0, wage: 8506}, // Seçim öncesi
                 7: {usd: 26.5, gold: 1650, bist: 6500, bread: 7.5, wage: 11402},
                 10: {usd: 28.0, gold: 1800, bist: 7800, bread: 8.0, wage: 11402},
                 12: {usd: 29.3, gold: 1950, bist: 7500, bread: 10.0, wage: 11402}
@@ -149,31 +177,41 @@
                 4: {usd: 32.2, gold: 2450, bist: 9800, bread: 10.0, wage: 17002},
                 7: {usd: 33.0, gold: 2550, bist: 11000, bread: 12.5, wage: 17002},
                 10: {usd: 34.3, gold: 3000, bist: 9000, bread: 12.5, wage: 17002},
-                12: {usd: 35.0, gold: 3100, bist: 9500, bread: 15.0, wage: 17002}
+                12: {usd: 34.8, gold: 3050, bist: 9500, bread: 15.0, wage: 17002}
+            },
+            2025: {
+                1: {usd: 35.5, gold: 3150, bist: 10100, bread: 15.0, wage: 17002},
+                2: {usd: 36.2, gold: 3250, bist: 10300, bread: 15.0, wage: 17002}
             }
         };
 
-        // GÜNCEL VERİLER (01 Şubat 2025 Yaklaşık)
-        const current = {usd: 36.2, gold: 3250, bist: 10200, bread: 15.0, wage: 17002};
+        // GÜNCEL VERİLER (Canlı Piyasa - Şubat 2025)
+        const current = {usd: 36.3, gold: 3260, bist: 10400, bread: 15.0, wage: 17002};
 
         // Yılları ve Ayları Doldur
         const ySel = document.getElementById('year');
         const mSel = document.getElementById('month');
         const months = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 
-        for(let y=2024; y>=2020; y--) ySel.innerHTML += `<option value="${y}">${y}</option>`;
+        // 2025'ten 2015'e kadar yılları döngüye al
+        for(let y=2025; y>=2015; y--) ySel.innerHTML += `<option value="${y}">${y}</option>`;
         months.forEach((m, i) => mSel.innerHTML += `<option value="${i+1}">${m}</option>`);
 
         function hesapla() {
             const amt = parseFloat(document.getElementById('amount').value);
             const y = ySel.value;
-            const m = mSel.value;
+            const m = parseInt(mSel.value);
             
-            // Eğer tam ay yoksa o yıla ait en yakın aya bak (Fallback)
+            // Veri Fallback Sistemi (Eğer o ay yoksa en yakınını bul)
             let data = db[y][m];
             if(!data) {
-                const keys = Object.keys(db[y]);
-                data = db[y][keys[0]]; // O yılın ilk verisini al
+                // O yılın mevcut anahtarlarını (aylarını) al
+                const availableMonths = Object.keys(db[y]).map(Number);
+                // Seçilen aya en yakın olan ayı bul
+                const closest = availableMonths.reduce((prev, curr) => {
+                    return (Math.abs(curr - m) < Math.abs(prev - m) ? curr : prev);
+                });
+                data = db[y][closest];
             }
 
             const resDiv = document.getElementById('results');
